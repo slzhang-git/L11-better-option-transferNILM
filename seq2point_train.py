@@ -29,14 +29,20 @@ from cnnModel import get_model
 from DataProvider import ChunkDoubleSourceSlider2
 import NetFlowExt as nf
 from Logger import log
-import tensorflow as tf
-from keras.layers import Input
-import keras.backend as K
+#import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.compat.v1.disable_eager_execution()
+#from keras.layers import Input
+from tensorflow.compat.v1.keras.layers import Input
+#import keras.backend as K
+import tensorflow.compat.v1.keras.backend as K
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import argparse
 from Arguments import *
+import matplotlib.pyplot as plt     # add for result visualization
+import time     # add for result visualization
 
 def remove_space(string):
     return string.replace(" ","")
@@ -61,11 +67,11 @@ def get_arguments():
                         help='the name of target appliance')
     parser.add_argument('--datadir',
                         type=str,
-                        default='/media/michele/Dati/myREFIT/',
+                        default='/dataset_management/refit/',
                         help='this is the directory of the training samples')
     parser.add_argument('--pretrainedmodel_dir',
                         type=str,
-                        default='./pretrained_model',
+                        default='/models',
                         help='this is the directory of the pre-trained models')
     parser.add_argument('--save_dir',
                         type=str,
@@ -140,7 +146,7 @@ sess = tf.InteractiveSession()
 appliance_name = args.appliance_name
 
 # path for training data
-training_path = args.datadir + appliance_name + '/' + appliance_name + '_training_' + '.csv'
+training_path = os.getcwd() + args.datadir + appliance_name + '/' + appliance_name + '_training_' + '.csv'    # revise file path
 log('Training dataset: ' + training_path)
 
 # Looking for the validation set
@@ -150,7 +156,7 @@ for filename in os.listdir(args.datadir + appliance_name):
         log(val_filename)
 
 # path for validation data
-validation_path = args.datadir + appliance_name + '/' + val_filename
+validation_path = os.getcwd() + args.datadir + appliance_name + '/' + val_filename    # revise file path
 log('Validation dataset: ' + validation_path)
 
 
@@ -270,6 +276,23 @@ train_loss, val_loss, step_train_loss, step_val_loss = nf.customfit(sess=sess,
                                                                     earlystopping=True,
                                                                     min_epoch=1,
                                                                     patience=1)
+
+running_time = time.time() - start_time
+
+# add result visualization
+plt.plot(train_loss, label='training')
+plt.plot(val_loss, label='validating')
+plt.xlabel('epochs')
+plt.ylabel('loss')
+plt.legend()
+if args.transfer_model:
+    plot_title = 'dataset: ' + appliance_name + ', model: ' + args.cnn + '. Running time: ' + str(running_time) + ' seconds'
+else:
+    plot_title = 'dataset: ' + appliance_name + ', model: ' + appliance_name + '. Running time: ' + str(running_time) + ' seconds'
+
+plt.title(plot_title)
+plt.show()
+# add result visualization
 
 # Following are training info
 """
