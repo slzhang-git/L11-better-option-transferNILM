@@ -1,8 +1,8 @@
 import numpy as np
 import time
 from Logger import log
-from keras import backend as K
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
+from tensorflow.compat.v1.keras import backend as K
 
 
 def dict_to_one(dp_dict={}):
