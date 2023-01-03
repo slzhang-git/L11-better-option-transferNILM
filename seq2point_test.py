@@ -31,8 +31,9 @@ import nilm_metric as nm
 from cnnModel import get_model, weights_loader
 import os
 import numpy as np
-import tensorflow as tf
-from keras.layers import Input
+import tensorflow.compat.v1 as tf   # revise version
+tf.compat.v1.disable_eager_execution()  # revise version
+from tensorflow.compat.v1.keras.layers import Input
 import pandas as pd
 import argparse
 from Arguments import *
@@ -64,11 +65,11 @@ def get_arguments():
                         help='the name of target appliance')
     parser.add_argument('--datadir',
                         type=str,
-                        default='/media/michele/Dati/myREFIT/',
+                        default='/dataset_management/refit/', 
                         help='this is the directory to the test data')
     parser.add_argument('--trained_model_dir',
                         type=str,
-                        default='./models',
+                        default='/models',
                         help='this is the directory to the trained models')
     parser.add_argument('--save_results_dir',
                         type=str,
@@ -137,7 +138,7 @@ appliance_name = args.appliance_name
 log('Appliance target is: ' + appliance_name)
 
 # Looking for the selected test set
-for filename in os.listdir(args.datadir + appliance_name):
+for filename in os.listdir(os.getcwd() + args.datadir + appliance_name):    #revise file path
         if args.test_type == 'train' and 'TRAIN' in filename.upper():
             test_filename = filename
             break
@@ -157,7 +158,7 @@ for filename in os.listdir(args.datadir + appliance_name):
 
 
 log('File for test: ' + test_filename)
-loadname_test = args.datadir + appliance_name + '/' + test_filename
+loadname_test = os.getcwd() + args.datadir + appliance_name + '/' + test_filename   # revise file path
 log('Loading from: ' + loadname_test)
 
 # offset parameter from windowlenght
@@ -203,10 +204,10 @@ sess.run(tf.global_variables_initializer())
 # Load path depending on the model kind
 if args.transfer:
     print('arg.transfer'.format(args.transfer))
-    param_file = args.trained_model_dir+'/cnn_s2p_' + appliance_name + '_transf_' + args.cnn + '_pointnet_model'
+    param_file = os.getcwd() + args.trained_model_dir+'/cnn_s2p_' + appliance_name + '_transf_' + args.cnn + '_pointnet_model' 
 else:
     print('arg.transfer'.format(args.transfer))
-    param_file = args.trained_model_dir+'/cnn_s2p_' + args.appliance_name + '_pointnet_model'
+    param_file = os.getcwd() + args.trained_model_dir+'/cnn_s2p_' + args.appliance_name + '_pointnet_model'
 
 # Loading weigths
 log('Model file: {}'.format(param_file))
