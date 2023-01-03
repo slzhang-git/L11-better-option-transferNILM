@@ -1,12 +1,12 @@
 from Arguments import *
 from Logger import log
-from keras.models import Model
-from keras.layers import Dense, Conv2D, Flatten, Reshape
+import tensorflow.compat.v1 as tf
+from tensorflow.compat.v1.keras.models import Model 
+from tensorflow.compat.v1.keras.layers import Dense, Conv2D, Flatten, Reshape 
 from keras.utils import print_summary, plot_model
 import numpy as np
-import keras.backend as K
+import tensorflow.compat.v1.keras.backend as K
 import os
-import tensorflow as tf
 import h5py
 import argparse
 
@@ -75,7 +75,7 @@ def get_model(appliance, input_tensor, window_length, transfer_dense=False, tran
     if transfer_dense:
         log("Transfer learning...")
         log("...loading an entire pre-trained model")
-        weights_loader(model, pretrainedmodel_dir+'/cnn_s2p_' + appliance + '_pointnet_model')
+        weights_loader(model, os.getcwd() + pretrainedmodel_dir+'/cnn_s2p_' + appliance + '_pointnet_model')
         model_def = model
     elif transfer_cnn and not transfer_dense:
         log("Transfer learning...")
@@ -95,7 +95,7 @@ def get_model(appliance, input_tensor, window_length, transfer_dense=False, tran
         raise argparse.ArgumentTypeError('Model selection error.')
 
     # Printing, logging and plotting the model
-    print_summary(model_def)
+    model_def.summary()
     # plot_model(model, to_file='./model.png', show_shapes=True, show_layer_names=True, rankdir='TB')
 
     # Adding network structure to both the log file and output terminal
@@ -125,11 +125,11 @@ def cnn_weights_loader(model_to_fill, cnn_appliance, pretrainedmodel_dir):
         
     f = h5py.File(weights_path, 'r')
     log(f.visititems(print_attrs))
-    layer_names = [n.decode('utf8') for n in f.attrs['layer_names']]
+    layer_names = [n for n in f.attrs['layer_names']] 
     for name in layer_names:
         if 'conv2d_' in name or 'cnn' in name:
             g = f[name]
-            weight_names = [n.decode('utf8') for n in g.attrs['weight_names']]
+            weight_names = [n for n in g.attrs['weight_names']] 
             if len(weight_names):
                 weight_values = [g[weight_name] for weight_name in weight_names]
 
