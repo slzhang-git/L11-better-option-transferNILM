@@ -114,7 +114,7 @@ Create a REFIT dataset (mains and appliance power measurments) for kettle:
 
 `python create_dataset.py --data_dir './' --appliance_name 'kettle' --aggregate_mean 522 --aggregate_std 814 --save_path './'`
     
-### **REFIT**
+### **REFIT** (in our experiment, we only use refit dataset)
 
 Download the REFIT raw data from the original website (https://pureportal.strath.ac.uk/en/datasets/refit-electrical-load-measurements-cleaned). 
 Appliances and training set composition for this project:
