@@ -3,7 +3,7 @@ from Logger import log
 import tensorflow.compat.v1 as tf
 from tensorflow.compat.v1.keras.models import Model 
 from tensorflow.compat.v1.keras.layers import Dense, Conv2D, Flatten, Reshape 
-from keras.utils import print_summary, plot_model
+#from keras.utils import print_summary, plot_model
 import numpy as np
 import tensorflow.compat.v1.keras.backend as K
 import os
