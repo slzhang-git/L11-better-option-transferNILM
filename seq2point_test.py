@@ -138,7 +138,7 @@ appliance_name = args.appliance_name
 log('Appliance target is: ' + appliance_name)
 
 # Looking for the selected test set
-for filename in os.listdir(os.getcwd() + args.datadir + appliance_name):    #revise file path
+for filename in os.listdir(args.datadir + appliance_name):    #revise file path
         if args.test_type == 'train' and 'TRAIN' in filename.upper():
             test_filename = filename
             break
@@ -158,7 +158,7 @@ for filename in os.listdir(os.getcwd() + args.datadir + appliance_name):    #rev
 
 
 log('File for test: ' + test_filename)
-loadname_test = os.getcwd() + args.datadir + appliance_name + '/' + test_filename   # revise file path
+loadname_test = args.datadir + appliance_name + '/' + test_filename   # revise file path
 log('Loading from: ' + loadname_test)
 
 # offset parameter from windowlenght
@@ -204,10 +204,10 @@ sess.run(tf.global_variables_initializer())
 # Load path depending on the model kind
 if args.transfer:
     print('arg.transfer'.format(args.transfer))
-    param_file = os.getcwd() + args.trained_model_dir+'/cnn_s2p_' + appliance_name + '_transf_' + args.cnn + '_pointnet_model' 
+    param_file = args.trained_model_dir+'/cnn_s2p_' + appliance_name + '_transf_' + args.cnn + '_pointnet_model' 
 else:
     print('arg.transfer'.format(args.transfer))
-    param_file = os.getcwd() + args.trained_model_dir+'/cnn_s2p_' + args.appliance_name + '_pointnet_model'
+    param_file = args.trained_model_dir+'/cnn_s2p_' + args.appliance_name + '_pointnet_model'
 
 # Loading weigths
 log('Model file: {}'.format(param_file))
