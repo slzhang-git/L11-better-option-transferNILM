@@ -146,7 +146,7 @@ sess = tf.InteractiveSession()
 appliance_name = args.appliance_name
 
 # path for training data
-training_path = os.getcwd() + args.datadir + appliance_name + '/' + appliance_name + '_training_' + '.csv'    # revise file path
+training_path = args.datadir + appliance_name + '/' + appliance_name + '_training_' + '.csv'    # revise file path
 log('Training dataset: ' + training_path)
 
 # Looking for the validation set
@@ -156,7 +156,7 @@ for filename in os.listdir(args.datadir + appliance_name):
         log(val_filename)
 
 # path for validation data
-validation_path = os.getcwd() + args.datadir + appliance_name + '/' + val_filename    # revise file path
+validation_path = args.datadir + appliance_name + '/' + val_filename    # revise file path
 log('Validation dataset: ' + validation_path)
 
 
