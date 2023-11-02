@@ -258,6 +258,8 @@ else:
 if not os.path.exists(save_path):
         os.makedirs(save_path)
 
+start_time = time.time()
+
 # Calling custom training function
 train_loss, val_loss, step_train_loss, step_val_loss = nf.customfit(sess=sess,
                                                                     network=model,
