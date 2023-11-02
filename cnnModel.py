@@ -75,7 +75,7 @@ def get_model(appliance, input_tensor, window_length, transfer_dense=False, tran
     if transfer_dense:
         log("Transfer learning...")
         log("...loading an entire pre-trained model")
-        weights_loader(model, os.getcwd() + pretrainedmodel_dir+'/cnn_s2p_' + appliance + '_pointnet_model')
+        weights_loader(model, pretrainedmodel_dir+'/cnn_s2p_' + appliance + '_pointnet_model')
         model_def = model
     elif transfer_cnn and not transfer_dense:
         log("Transfer learning...")
